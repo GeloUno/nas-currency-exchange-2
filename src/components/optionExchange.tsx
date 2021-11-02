@@ -1,43 +1,21 @@
+import { nanoid } from 'nanoid';
 import React from 'react';
+import { ICurrencyCodeCounytry } from '../models/ICurrencyCodeCounytry';
 
-function OptionExchange() {
+interface IOptionExchangeProps {
+  currencyCodeContryArray: Array<ICurrencyCodeCounytry>;
+}
+
+function OptionExchange({ currencyCodeContryArray }: IOptionExchangeProps) {
   return (
     <div className="absolute bg-white w-32 h-32 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 rounded-md shadow-lg ">
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
-      <div className="p-1 pl-3 cursor-pointer">PLN</div>
+      {currencyCodeContryArray.map((arr) => {
+        return (
+          <div key={nanoid()} className="p-1 pl-3 cursor-pointer">
+            {arr.code}
+          </div>
+        );
+      })}
     </div>
   );
 }
