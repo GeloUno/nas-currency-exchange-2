@@ -1,8 +1,11 @@
 import { RiArrowLeftRightFill } from 'react-icons/ri';
 import ButtonExchange from './buttonExchange';
 import SelectExchange from './selectExchange';
+import { useContext } from 'react';
+import NotificationContext from '../store/currencyContext';
 
 function FormExchange() {
+  const CurrencyCtx = useContext(NotificationContext);
   return (
     <div className="flex flex-col w-full">
       <form
@@ -31,13 +34,19 @@ function FormExchange() {
         </div>
         <div className="flex flex-row w-5/6 justify-between items-center my-6">
           <div>
-            <SelectExchange currency={`PLN`} />
+            <SelectExchange
+              currency={CurrencyCtx!.currencyFrom}
+              setCurrency={CurrencyCtx!.setCurrencyFrom}
+            />
           </div>
           <div className="cursor-pointer">
             <RiArrowLeftRightFill />
           </div>
           <div>
-            <SelectExchange currency={`USD`} />
+            <SelectExchange
+              currency={CurrencyCtx!.currencyTo}
+              setCurrency={CurrencyCtx!.setCurrencyTo}
+            />
           </div>
         </div>
         <div className="flex w-5/6">
