@@ -5,10 +5,7 @@ interface IHistoryExchangeProps {
 }
 function HistoryExchange({ width }: IHistoryExchangeProps) {
   const widthHelper = useWindowWidth();
-  console.log(
-    '<- LOG -> file: historyExchange.tsx -> line 10 -> HistoryExchange -> widthHelper',
-    widthHelper
-  );
+
   return (
     <div
       className="absolute h-full bg-gradient-to-b from-blue-500 to-blue-700 rounded-2xl"
