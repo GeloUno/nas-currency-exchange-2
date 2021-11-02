@@ -6,7 +6,9 @@ module.exports = {
     extend: {},
   },
   variants: {},
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+  ],
   purge: {
     // Filenames to scan for classes
     content: [
