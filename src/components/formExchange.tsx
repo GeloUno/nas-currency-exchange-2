@@ -3,9 +3,16 @@ import ButtonExchange from './buttonExchange';
 import SelectExchange from './selectExchange';
 import { useContext } from 'react';
 import NotificationContext from '../store/currencyContext';
+import { ICurrenciesCode } from '../models/currencyCode';
 
 function FormExchange() {
   const CurrencyCtx = useContext(NotificationContext);
+
+  function toggleCurrencyHandler() {
+    const currencyHelper: ICurrenciesCode = CurrencyCtx!.currencyFrom;
+    CurrencyCtx?.setCurrencyFrom(CurrencyCtx.currencyTo);
+    CurrencyCtx?.setCurrencyTo(currencyHelper);
+  }
   return (
     <div className="flex flex-col w-full">
       <form
@@ -39,7 +46,10 @@ function FormExchange() {
               setCurrency={CurrencyCtx!.setCurrencyFrom}
             />
           </div>
-          <div className="cursor-pointer">
+          <div
+            className="cursor-pointer"
+            onClick={() => toggleCurrencyHandler()}
+          >
             <RiArrowLeftRightFill />
           </div>
           <div>
