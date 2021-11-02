@@ -1,4 +1,5 @@
 import { RiArrowLeftRightFill } from 'react-icons/ri';
+import ButtonExchange from './buttonExchange';
 
 function FormExchange() {
   return (
@@ -23,7 +24,7 @@ function FormExchange() {
           </label>
           <input
             type="text"
-            className="w-full border-b-2 p-4 border-gray-400 focus:outline-none focus:outline-none focus:border-blue-600 placeholder-gray-300"
+            className="w-full border-b-2 p-4 border-gray-400 focus:outline-none focus:border-blue-600 placeholder-gray-300"
             placeholder="wynik"
           />
         </div>
@@ -32,13 +33,8 @@ function FormExchange() {
             <select
               name=""
               id=""
-              className="py-2 px-4 shadow-md focus:outline-none rounded-md appearance"
+              className="py-2 px-6 shadow-md focus:outline-none rounded-md appearance"
             >
-              <option value="PLN">PLN</option>
-              <option value="PLN">PLN</option>
-              <option value="PLN">PLN</option>
-              <option value="PLN">PLN</option>
-              <option value="PLN">PLN</option>
               <option value="PLN">PLN</option>
             </select>
           </div>
@@ -46,10 +42,17 @@ function FormExchange() {
             <RiArrowLeftRightFill />
           </div>
           <div>
-            <select name="" id="">
+            <select
+              name=""
+              id=""
+              className="py-2 px-6 shadow-md focus:outline-none rounded-md appearance"
+            >
               <option value="USD">USD</option>
             </select>
           </div>
+        </div>
+        <div className="flex w-5/6">
+          <ButtonExchange />
         </div>
       </form>
     </div>
