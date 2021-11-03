@@ -13,6 +13,7 @@ function FormExchange() {
     CurrencyCtx?.setCurrencyFrom(CurrencyCtx.currencyTo);
     CurrencyCtx?.setCurrencyTo(currencyHelper);
   }
+
   return (
     <div className="flex flex-col w-full">
       <form
@@ -21,7 +22,7 @@ function FormExchange() {
       >
         <div className="relative w-5/6 my-3">
           <label htmlFor="" className="absolute top-5 right-5 text-gray-300">
-            PLN
+            {CurrencyCtx?.currencyFrom && CurrencyCtx.currencyFrom.id}
           </label>
           <input
             type="text"
@@ -31,7 +32,7 @@ function FormExchange() {
         </div>
         <div className="relative w-5/6 my-3 ">
           <label htmlFor="" className="absolute top-5 right-5 text-gray-300">
-            USD
+            {CurrencyCtx?.currencyTo && CurrencyCtx.currencyTo.id}
           </label>
           <input
             type="text"
