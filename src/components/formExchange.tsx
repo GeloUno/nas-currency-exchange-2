@@ -7,6 +7,7 @@ import { useQuery } from 'react-query';
 import { getCurrencyExchange } from '../controllers/getCurrencyEchange';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IFormExchange } from '../models/IFormExchange';
+import { DevTool } from '@hookform/devtools';
 
 function FormExchange() {
   const currencyCtx = useContext(NotificationContext);
@@ -45,8 +46,11 @@ function FormExchange() {
     setValue,
     setError,
     clearErrors,
-    formState: { errors },
+    control,
+    formState,
   } = useForm<IFormExchange>();
+
+  const { errors, isDirty } = formState;
 
   const onSubmitHandler: SubmitHandler<IFormExchange> = (data) => {
     if (data.valueFrom === '' && data.valueTo === '') {
@@ -78,6 +82,7 @@ function FormExchange() {
         if (exchangeValue && +data.valueTo !== 0) {
           setValue('valueFrom', (+data.valueTo / +exchangeValue).toFixed(2));
           console.log(`valueTo`);
+
           return;
         }
       }
@@ -163,11 +168,15 @@ function FormExchange() {
         <div className="flex w-4/6">
           <input
             type="submit"
-            className={`flex w-full py-4 text-left bg-blue-600 text-white justify-center rounded-3xl uppercase mt-4 text-sm cursor-pointer`}
+            className={`flex w-full py-4 text-left ${
+              isDirty ? `bg-blue-600` : `bg-gray-300`
+            } text-white justify-center rounded-3xl uppercase mt-4 text-sm cursor-pointer`}
             value="KONWERTUJ"
+            disabled={!isDirty}
           />
         </div>
       </form>
+      <DevTool control={control} placement={'top-left'} />
     </div>
   );
 }
