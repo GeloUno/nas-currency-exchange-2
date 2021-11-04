@@ -3,5 +3,5 @@ export interface IExchangeLocalStorage {
     currencyFrom: string;
     valueTo: string;
     currencyTo: string;
-    exchangeDate: Date;
+    exchangeDate: string;
 }
