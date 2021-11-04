@@ -8,7 +8,7 @@ import { ErrorDataFetch } from '../models/ErrorDataFetch';
 import { useQuery } from 'react-query';
 import { getCurrencyCodeCountry } from '../controllers/getCurrecyCodeContry';
 import { currencyCodeCountryObjectToArray } from '../controllers/CurrencyCodeCountryObjectToArray';
-
+import FadeLoader from 'react-spinners/FadeLoader';
 function SectionExchange() {
   const currencyCtx = useContext(NotificationContext);
   const width = 462;
@@ -35,6 +35,17 @@ function SectionExchange() {
       currencyCtx?.setCurrencyCodeContryArray(currencyCodeCoutryArray);
     }
   }, [data]);
+
+  if (isLoading) {
+    return (
+      <div
+        className="flex absolute top-60 -left-32  w-screen  justify-center"
+        style={{ height: '503px' }}
+      >
+        <FadeLoader color={`#1C5CC5`} height={25} margin={20} />
+      </div>
+    );
+  }
 
   return (
     <div

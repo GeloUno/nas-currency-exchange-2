@@ -9,6 +9,7 @@ import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { IFormExchange } from '../models/IFormExchange';
 import { addExchangeToLocalStorage } from '../controllers/addExchangeToLocalSrorage';
 import { DevTool } from '@hookform/devtools';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 
 function FormExchange() {
   const currencyCtx = useContext(NotificationContext);
@@ -163,7 +164,10 @@ function FormExchange() {
               setValue('valueTo', '');
             }}
           >
-            <RiArrowLeftRightFill />
+            {isLoading && (
+              <ScaleLoader height={15} width={2} radius={1} margin={2} />
+            )}
+            {!isLoading && <RiArrowLeftRightFill />}
           </div>
           <div>
             <SelectExchange
