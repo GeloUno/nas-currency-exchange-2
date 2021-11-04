@@ -5,6 +5,7 @@ import { IExchangeLocalStorage } from '../models/IExchangeLocalStorage';
 import { getExchangeFromLocalStorage } from '../controllers/getExchangeFromLocalSrorage';
 import HistoryExchangeList from './historyExchangeList';
 import NoHistoryExchange from './noHistoryExchange';
+import CleaningHistoryExchange from './cleaningHistoryExchange';
 
 interface IHistoryExchangeProps {
   width: number;
@@ -55,13 +56,16 @@ function HistoryExchange({ width }: IHistoryExchangeProps) {
         </p>
       </div>
       <div className="flex flex-col h-5/6 w-4/6  justify-start self-center mr-12">
-        <div className="flex justify-between w-full text-xs border-b-2 border-white py-4 font-medium">
-          <p>Data</p> <p>Przed konwersją</p> <p>Po konwersji</p>
+        <div className="flex flex-col h-5/6 w-full ">
+          <div className="flex justify-between w-full text-xs border-b-2 border-white py-4 font-medium">
+            <p>Data</p> <p>Przed konwersją</p> <p>Po konwersji</p>
+          </div>
+          {exchangeHistory.length === 0 && <NoHistoryExchange />}
+          {exchangeHistory.length !== 0 && (
+            <HistoryExchangeList exchangeHistory={exchangeHistory} />
+          )}
         </div>
-        {exchangeHistory.length === 0 && <NoHistoryExchange />}
-        {exchangeHistory.length !== 0 && (
-          <HistoryExchangeList exchangeHistory={exchangeHistory} />
-        )}
+        {<CleaningHistoryExchange active={exchangeHistory.length !== 0} />}
       </div>
     </div>
   );
