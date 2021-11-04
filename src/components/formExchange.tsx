@@ -8,6 +8,7 @@ import { getCurrencyExchange } from '../controllers/getCurrencyEchange';
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { IFormExchange } from '../models/IFormExchange';
 import { addExchangeToLocalStorage } from '../controllers/addExchangeToLocalSrorage';
+import { DevTool } from '@hookform/devtools';
 
 function FormExchange() {
   const currencyCtx = useContext(NotificationContext);
@@ -182,6 +183,7 @@ function FormExchange() {
           />
         </div>
       </form>
+      <DevTool control={control} placement={'top-left'} />
     </div>
   );
 }
