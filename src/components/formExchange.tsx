@@ -10,6 +10,7 @@ import { IFormExchange } from '../models/IFormExchange';
 import { addExchangeToLocalStorage } from '../controllers/addExchangeToLocalSrorage';
 import { DevTool } from '@hookform/devtools';
 import ScaleLoader from 'react-spinners/ScaleLoader';
+import ErrorExchange from './errorExchange';
 
 function FormExchange() {
   const currencyCtx = useContext(NotificationContext);
@@ -187,6 +188,7 @@ function FormExchange() {
           />
         </div>
       </form>
+
       <DevTool control={control} placement={'top-left'} />
     </div>
   );

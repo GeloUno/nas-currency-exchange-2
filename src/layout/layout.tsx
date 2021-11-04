@@ -1,4 +1,5 @@
 import SectionExchange from '../components/sectionExchange';
+import ErrorExchange from '../components/errorExchange';
 
 function Layout() {
   return (
@@ -15,6 +16,7 @@ function Layout() {
           <SectionExchange />
         </div>
       </div>
+      <ErrorExchange />
     </div>
   );
 }
