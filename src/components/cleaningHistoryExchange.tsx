@@ -1,5 +1,4 @@
-import React from 'react';
-import { clearExchangeFromLocalStorage } from '../controllers/clearExchangeFromLocalStorage';
+import { cleaningExchangeFromLocalStorage } from '../controllers/cleaningExchangeFromLocalStorage';
 
 interface IClearHistoryExchangeProps {
   active: boolean;
@@ -20,7 +19,7 @@ function CleaningHistoryExchange({ active }: IClearHistoryExchangeProps) {
     <div className="flex justify-center">
       <p
         className="text-blue-200 underline cursor-pointer p-5"
-        onClick={() => clearExchangeFromLocalStorage()}
+        onClick={() => cleaningExchangeFromLocalStorage()}
       >
         wyczyść historię
       </p>
