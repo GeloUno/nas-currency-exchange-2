@@ -5,9 +5,9 @@ import NotificationContext from '../store/currencyContext';
 import { ICurrenciesCode } from '../models/currencyCode';
 import { useQuery } from 'react-query';
 import { getCurrencyExchange } from '../controllers/getCurrencyEchange';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { IFormExchange } from '../models/IFormExchange';
-import { DevTool } from '@hookform/devtools';
+import { addExchangeToLocalStorage } from '../controllers/addExchangeToLocalSrorage';
 
 function FormExchange() {
   const currencyCtx = useContext(NotificationContext);
@@ -47,10 +47,12 @@ function FormExchange() {
     setError,
     clearErrors,
     control,
+    watch,
     formState,
   } = useForm<IFormExchange>();
 
   const { errors, isDirty } = formState;
+  const { dirtyFields } = useFormState<IFormExchange>({ control });
 
   const onSubmitHandler: SubmitHandler<IFormExchange> = (data) => {
     if (data.valueFrom === '' && data.valueTo === '') {
@@ -59,32 +61,36 @@ function FormExchange() {
       return;
     }
 
-    if (isNaN(+data.valueFrom)) {
+    if (data.valueFrom === '0' || isNaN(+data.valueFrom)) {
       setError('valueFrom', { message: 'Nieprawidłowa wartość' });
     } else {
-      if (data.valueFrom === '0') {
-        setError('valueFrom', { message: 'Nieprawidłowa wartość' });
-      } else {
-        if (exchangeValue && +data.valueFrom !== 0) {
-          setValue('valueTo', (+data.valueFrom * +exchangeValue).toFixed(2));
-          console.log(`valueFrom`);
-          return;
-        }
+      if (exchangeValue && +data.valueFrom !== 0) {
+        const calc = (+data.valueFrom * +exchangeValue).toFixed(2);
+        setValue('valueTo', calc);
+        console.log(`valueFrom`);
+        addExchangeToLocalStorage(
+          data.valueFrom.toString(),
+          currencyCtx!.currencyFrom.id,
+          calc,
+          currencyCtx!.currencyTo.id
+        );
+        return;
       }
     }
 
-    if (isNaN(+data.valueTo)) {
+    if (data.valueTo === '0' || isNaN(+data.valueTo)) {
       setError('valueTo', { message: 'Nieprawidłowa wartość' });
     } else {
-      if (data.valueTo === '0') {
-        setError('valueTo', { message: 'Nieprawidłowa wartość' });
-      } else {
-        if (exchangeValue && +data.valueTo !== 0) {
-          setValue('valueFrom', (+data.valueTo / +exchangeValue).toFixed(2));
-          console.log(`valueTo`);
-
-          return;
-        }
+      if (exchangeValue && +data.valueTo !== 0) {
+        const calc = (+data.valueTo / +exchangeValue).toFixed(2);
+        setValue('valueFrom', calc);
+        addExchangeToLocalStorage(
+          calc,
+          currencyCtx!.currencyFrom.id,
+          data.valueTo.toString(),
+          currencyCtx!.currencyTo.id
+        );
+        return;
       }
     }
   };
@@ -172,11 +178,10 @@ function FormExchange() {
               isDirty ? `bg-blue-600` : `bg-gray-300`
             } text-white justify-center rounded-3xl uppercase mt-4 text-sm cursor-pointer`}
             value="KONWERTUJ"
-            disabled={!isDirty}
+            // disabled={!isDirty}
           />
         </div>
       </form>
-      <DevTool control={control} placement={'top-left'} />
     </div>
   );
 }
