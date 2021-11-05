@@ -1,7 +1,6 @@
 import { RiArrowLeftRightFill } from 'react-icons/ri';
 import SelectExchange from './selectExchange';
 import { useContext, useMemo, useState } from 'react';
-import NotificationContext from '../store/currencyContext';
 import { ICurrenciesCode } from '../models/currencyCode';
 import { useQuery } from 'react-query';
 import { getCurrencyExchange } from '../controllers/getCurrencyEchange';
@@ -10,10 +9,14 @@ import { IFormExchange } from '../models/IFormExchange';
 import { addExchangeToLocalStorage } from '../controllers/addExchangeToLocalSrorage';
 import { DevTool } from '@hookform/devtools';
 import ScaleLoader from 'react-spinners/ScaleLoader';
-import ErrorExchange from './errorExchange';
+import ErrorContext from '../store/errorContext';
+import HistoryExchangeContext from '../store/historyContext';
+import CurrencyContext from '../store/currencyContext';
 
 function FormExchange() {
-  const currencyCtx = useContext(NotificationContext);
+  const currencyCtx = useContext(CurrencyContext);
+  const errorCtx = useContext(ErrorContext);
+  const historyCtx = useContext(HistoryExchangeContext);
 
   function toggleCurrencyHandler() {
     const currencyHelper: ICurrenciesCode = currencyCtx!.currencyFrom;
@@ -35,6 +38,10 @@ function FormExchange() {
       staleTime: 1 * 60 * 60 * 1000,
     }
   );
+
+  if (isError) {
+    errorCtx?.showErrorExchangeMessage();
+  }
 
   useMemo(() => {
     if (data?.data) {
@@ -70,13 +77,13 @@ function FormExchange() {
       if (exchangeValue && +data.valueFrom !== 0) {
         const calc = (+data.valueFrom * +exchangeValue).toFixed(2);
         setValue('valueTo', calc);
-        console.log(`valueFrom`);
         addExchangeToLocalStorage(
           data.valueFrom.toString(),
           currencyCtx!.currencyFrom.id,
           calc,
           currencyCtx!.currencyTo.id
         );
+        historyCtx?.refreshHistoryFromLocalStorage();
         return;
       }
     }
@@ -93,6 +100,7 @@ function FormExchange() {
           data.valueTo.toString(),
           currencyCtx!.currencyTo.id
         );
+        historyCtx?.refreshHistoryFromLocalStorage();
         return;
       }
     }
