@@ -1,11 +1,12 @@
 import { useWindowWidth } from '@react-hook/window-size';
 import { IoCloseSharp } from 'react-icons/io5';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { IExchangeLocalStorage } from '../models/IExchangeLocalStorage';
 import { getExchangeFromLocalStorage } from '../controllers/getExchangeFromLocalSrorage';
 import HistoryExchangeList from './historyExchangeList';
 import NoHistoryExchange from './noHistoryExchange';
 import CleaningHistoryExchange from './cleaningHistoryExchange';
+import HistoryExchangeContext from '../store/historyContext';
 
 interface IHistoryExchangeProps {
   width: number;
@@ -15,13 +16,10 @@ function HistoryExchange({ width }: IHistoryExchangeProps) {
   const [showHistory, setShowHistory] = useState(false);
   const rightMove = showHistory ? 400 : 55;
 
-  const [exchangeHistory, setExchangeHistory] = useState<
-    Array<IExchangeLocalStorage>
-  >([]);
+  const historyCtx = useContext(HistoryExchangeContext);
 
   useEffect(() => {
-    const data: Array<IExchangeLocalStorage> = getExchangeFromLocalStorage();
-    setExchangeHistory(data);
+    historyCtx?.refreshHistoryFromLocalStorage();
   }, []);
 
   return (
@@ -60,12 +58,18 @@ function HistoryExchange({ width }: IHistoryExchangeProps) {
           <div className="flex justify-between w-full text-xs border-b-2 border-white py-4 font-medium">
             <p>Data</p> <p>Przed konwersją</p> <p>Po konwersji</p>
           </div>
-          {exchangeHistory.length === 0 && <NoHistoryExchange />}
-          {exchangeHistory.length !== 0 && (
-            <HistoryExchangeList exchangeHistory={exchangeHistory} />
-          )}
+          {historyCtx?.historyExchange &&
+            historyCtx?.historyExchange.length === null && (
+              <NoHistoryExchange />
+            )}
+          {historyCtx?.historyExchange &&
+            historyCtx?.historyExchange.length !== 0 && (
+              <HistoryExchangeList
+                exchangeHistory={historyCtx?.historyExchange}
+              />
+            )}
         </div>
-        {<CleaningHistoryExchange active={exchangeHistory.length !== 0} />}
+        <CleaningHistoryExchange />
       </div>
     </div>
   );
