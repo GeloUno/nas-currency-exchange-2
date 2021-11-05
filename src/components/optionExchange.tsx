@@ -6,9 +6,7 @@ import { ICurrenciesCode } from '../models/currencyCode';
 interface IOptionExchangeProps {
   currencyCodeContryArray: Array<ICurrencyCodeCounytry>;
   setShowSelect(value: React.SetStateAction<boolean>): void;
-  setCurrency:
-    | React.Dispatch<React.SetStateAction<ICurrenciesCode>>
-    | undefined;
+  setCurrency(code: ICurrenciesCode): void;
 }
 
 function OptionExchange({
@@ -24,7 +22,7 @@ function OptionExchange({
             key={nanoid()}
             className="p-1 pl-3 cursor-pointer"
             onClick={() => {
-              setCurrency!({ id: arr.code } as ICurrenciesCode);
+              setCurrency({ id: arr.code } as ICurrenciesCode);
               setShowSelect((prev) => !prev);
             }}
           >
