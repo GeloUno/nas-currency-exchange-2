@@ -1,19 +1,17 @@
 import { useState, useContext } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import OptionExchange from './optionExchange';
-import NotificationContext from '../store/currencyContext';
 import { ICurrenciesCode } from '../models/currencyCode';
+import CurrencyContext from '../store/currencyContext';
 
 interface ISelectExchangeProps {
   currency: ICurrenciesCode | undefined;
-  setCurrency:
-    | React.Dispatch<React.SetStateAction<ICurrenciesCode>>
-    | undefined;
+  setCurrency(code: ICurrenciesCode): void;
 }
 
 function SelectExchange({ currency, setCurrency }: ISelectExchangeProps) {
   const [showSelect, setShowSelect] = useState<boolean>(false);
-  const currencyCtx = useContext(NotificationContext);
+  const currencyCtx = useContext(CurrencyContext);
 
   return (
     <div>
@@ -27,9 +25,9 @@ function SelectExchange({ currency, setCurrency }: ISelectExchangeProps) {
           {showSelect && <FiChevronUp />}
         </div>
       </div>
-      {showSelect && currencyCtx?.currencyCodeContryArray != undefined && (
+      {showSelect && currencyCtx?.currencyCodeArray != undefined && (
         <OptionExchange
-          currencyCodeContryArray={currencyCtx.currencyCodeContryArray}
+          currencyCodeContryArray={currencyCtx.currencyCodeArray}
           setShowSelect={setShowSelect}
           setCurrency={setCurrency}
         />
