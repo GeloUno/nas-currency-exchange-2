@@ -4,36 +4,51 @@ import React from 'react';
 import { ICurrenciesCode } from '../models/currencyCode';
 
 interface ICurrencyContext {
-  currencyCodeContryArray: Array<ICurrencyCodeCounytry> | undefined;
-  setCurrencyCodeContryArray: React.Dispatch<
-    React.SetStateAction<ICurrencyCodeCounytry[] | undefined>
-  >;
+  currencyCodeArray: Array<ICurrencyCodeCounytry> | undefined;
+  setCurrencyCodeContryArray(
+    arrayCurrencyCode: Array<ICurrencyCodeCounytry>
+  ): void;
   currencyFrom: ICurrenciesCode;
-  setCurrencyFrom: React.Dispatch<React.SetStateAction<ICurrenciesCode>>;
+  setCurrencyFrom(code: ICurrenciesCode): void;
   currencyTo: ICurrenciesCode;
-  setCurrencyTo: React.Dispatch<React.SetStateAction<ICurrenciesCode>>;
+  setCurrencyTo(code: ICurrenciesCode): void;
 }
 
-interface ICurrencyCpontextProviderProps {
+interface ICurrencyContextProviderProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
-const NotificationContext = createContext<ICurrencyContext | null>(null);
+const CurrencyContext = createContext<ICurrencyContext | null>(null);
 
 export function CurrencyContextProvider({
   children,
-}: ICurrencyCpontextProviderProps) {
-  const [currencyCodeContryArray, setCurrencyCodeContryArray] = useState<
+}: ICurrencyContextProviderProps) {
+  const [currencyCodeArray, _setCurrencyCodeContryArray] = useState<
     Array<ICurrencyCodeCounytry> | undefined
   >();
 
-  const [currencyFrom, setCurrencyFrom] = useState<ICurrenciesCode>({
+  function setCurrencyCodeContryArray(
+    arrayCurrencyCode: Array<ICurrencyCodeCounytry>
+  ) {
+    _setCurrencyCodeContryArray(arrayCurrencyCode);
+  }
+
+  const [currencyFrom, _setCurrencyFrom] = useState<ICurrenciesCode>({
     id: 'PLN',
   });
-  const [currencyTo, setCurrencyTo] = useState<ICurrenciesCode>({ id: 'EUR' });
+
+  function setCurrencyFrom(currency: ICurrenciesCode) {
+    _setCurrencyFrom(currency);
+  }
+
+  const [currencyTo, _setCurrencyTo] = useState<ICurrenciesCode>({ id: 'EUR' });
+
+  function setCurrencyTo(currency: ICurrenciesCode) {
+    _setCurrencyTo(currency);
+  }
 
   const context: ICurrencyContext = {
-    currencyCodeContryArray,
+    currencyCodeArray,
     setCurrencyCodeContryArray,
     currencyFrom,
     currencyTo,
@@ -42,10 +57,10 @@ export function CurrencyContextProvider({
   };
 
   return (
-    <NotificationContext.Provider value={context}>
+    <CurrencyContext.Provider value={context}>
       {children}
-    </NotificationContext.Provider>
+    </CurrencyContext.Provider>
   );
 }
 
-export default NotificationContext;
+export default CurrencyContext;
