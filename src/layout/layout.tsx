@@ -1,7 +1,10 @@
 import SectionExchange from '../components/sectionExchange';
 import ErrorExchange from '../components/errorExchange';
+import { useContext } from 'react';
+import ErrorContext from '../store/errorContext';
 
 function Layout() {
+  const errorCtx = useContext(ErrorContext);
   return (
     <div
       className="w-full h-full flex"
@@ -16,7 +19,7 @@ function Layout() {
           <SectionExchange />
         </div>
       </div>
-      <ErrorExchange />
+      {errorCtx?.errorExchange && <ErrorExchange />}
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import HistoryExchange from './historyExchange';
 import BodyExchange from './bodyExchange';
 import { useContext, useMemo } from 'react';
-import NotificationContext from '../store/currencyContext';
 import { ICurrenciesData } from '../models/currencyCodeData';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorDataFetch } from '../models/ErrorDataFetch';
@@ -9,8 +8,12 @@ import { useQuery } from 'react-query';
 import { getCurrencyCodeCountry } from '../controllers/getCurrecyCodeContry';
 import { currencyCodeCountryObjectToArray } from '../controllers/CurrencyCodeCountryObjectToArray';
 import FadeLoader from 'react-spinners/FadeLoader';
+import ErrorContext from '../store/errorContext';
+import CurrencyContext from '../store/currencyContext';
+
 function SectionExchange() {
-  const currencyCtx = useContext(NotificationContext);
+  const currencyCtx = useContext(CurrencyContext);
+  const errorCtx = useContext(ErrorContext);
   const width = 462;
 
   const {
@@ -45,6 +48,10 @@ function SectionExchange() {
         <FadeLoader color={`#1C5CC5`} height={25} margin={20} />
       </div>
     );
+  }
+
+  if (isError) {
+    errorCtx?.showErrorExchangeMessage();
   }
 
   return (
