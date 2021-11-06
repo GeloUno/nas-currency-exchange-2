@@ -12,7 +12,7 @@ function App() {
       <ErrorExchangeProvider>
         <HistoryExchangeProvider>
           <QueryClientProvider client={queryClient}>
-            <div className="flex flex-col h-full items-center justify-center text-white bg-gradient-to-br from-gray-600 via-teal-700 to-gray-800">
+            <div className="flex flex-col h-full items-center justify-center text-white ">
               <Layout />
             </div>
             <ReactQueryDevtools position="bottom-right" />
