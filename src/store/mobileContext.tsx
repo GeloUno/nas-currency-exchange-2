@@ -17,17 +17,17 @@ export function MobileContextProvider({
   children,
 }: IMobileContextProviderProps) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  console.log(
-    '<- LOG -> file: mobileContext.tsx -> line 20 -> isMobile',
-    isMobile
-  );
 
   const widthWindow = useWindowWidth();
   const heightWindow = useWindowHeight();
 
   useMemo(() => {
-    if (heightWindow > widthWindow) setIsMobile(true);
-  }, []);
+    if (heightWindow > widthWindow && widthWindow < 450) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  }, [widthWindow, heightWindow]);
 
   const context: IMobileContext = {
     isMobile: isMobile,
