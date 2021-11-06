@@ -11,10 +11,14 @@ import FadeLoader from 'react-spinners/FadeLoader';
 import ErrorContext from '../store/errorContext';
 import CurrencyContext from '../store/currencyContext';
 import FormExchange from './formExchange';
+import SectionWrapperExchange from './sectionWrapperExchange';
+import MobileContext from '../store/mobileContext';
 
 function SectionExchange() {
   const currencyCtx = useContext(CurrencyContext);
   const errorCtx = useContext(ErrorContext);
+  const mobileCtx = useContext(MobileContext);
+  // const width = mobileCtx?.isMobile ? mobileCtx.widthWindow * 0.8 : 462;
   const width = 462;
 
   const {
@@ -42,17 +46,14 @@ function SectionExchange() {
 
   if (isLoading) {
     return (
-      <div
-        className="flex absolute top-60 -left-32  w-screen  justify-center "
-        style={{ height: '503px' }}
-      >
+      <SectionWrapperExchange>
         <div
           className="flex h-full justify-center items-center bg-gray-100 rounded-2xl"
           style={{ width }}
         >
           <FadeLoader color={`#1C5CC5`} height={25} margin={20} />
         </div>
-      </div>
+      </SectionWrapperExchange>
     );
   }
 
@@ -61,17 +62,14 @@ function SectionExchange() {
   }
 
   return (
-    <div
-      className="flex absolute top-60 -left-32  w-screen  justify-center"
-      style={{ height: '503px' }}
-    >
+    <SectionWrapperExchange>
       <BodyExchange width={width}>
         <HistoryExchange width={width} />
       </BodyExchange>
       <BodyExchange width={width} absolute>
         <FormExchange />
       </BodyExchange>
-    </div>
+    </SectionWrapperExchange>
   );
 }
 
