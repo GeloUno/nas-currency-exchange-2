@@ -7,7 +7,7 @@ interface IJoinContextProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
-function JoinContextProvider({ children }: IJoinContextProps) {
+function AllContextProvider({ children }: IJoinContextProps) {
   return (
     <CurrencyContextProvider>
       <ErrorExchangeProvider>
@@ -19,4 +19,4 @@ function JoinContextProvider({ children }: IJoinContextProps) {
   );
 }
 
-export default JoinContextProvider;
+export default AllContextProvider;
