@@ -3,6 +3,7 @@ import React from 'react';
 import { useWindowHeight, useWindowWidth } from '@react-hook/window-size';
 interface IMobileContext {
   isMobile: boolean;
+  isPortrait: boolean;
   widthWindow: number;
   heightWindow: number;
 }
@@ -17,6 +18,7 @@ export function MobileContextProvider({
   children,
 }: IMobileContextProviderProps) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isPortrait, setIsPortrait] = useState(false);
 
   const widthWindow = useWindowWidth();
   const heightWindow = useWindowHeight();
@@ -27,10 +29,16 @@ export function MobileContextProvider({
     } else {
       setIsMobile(false);
     }
+    if (heightWindow > widthWindow) {
+      setIsPortrait(true);
+    } else {
+      setIsPortrait(false);
+    }
   }, [widthWindow, heightWindow]);
 
   const context: IMobileContext = {
     isMobile: isMobile,
+    isPortrait: isPortrait,
     heightWindow,
     widthWindow,
   };

@@ -5,6 +5,7 @@ import HistoryExchangeList from './historyExchangeList';
 import NoHistoryExchange from './noHistoryExchange';
 import CleaningHistoryExchange from './cleaningHistoryExchange';
 import HistoryExchangeContext from '../store/historyContext';
+import MobileContext from '../store/mobileContext';
 
 interface IHistoryExchangeProps {
   width: number;
@@ -12,7 +13,10 @@ interface IHistoryExchangeProps {
 function HistoryExchange({ width }: IHistoryExchangeProps) {
   const widthHelper = useWindowWidth();
   const [showHistory, setShowHistory] = useState(false);
-  const rightMove = showHistory ? 400 : 55;
+
+  const mobileCtx = useContext(MobileContext);
+
+  const rightMove = showHistory && !mobileCtx?.isPortrait ? 400 : 55;
 
   const historyCtx = useContext(HistoryExchangeContext);
 
@@ -22,7 +26,9 @@ function HistoryExchange({ width }: IHistoryExchangeProps) {
 
   return (
     <div
-      className="absolute flex  h-full w-full justify-center self-start  bg-gradient-to-b from-blue-500 to-blue-700 rounded-2xl cursor-default"
+      className={`absolute flex  h-full w-full justify-center self-start  bg-gradient-to-b from-blue-500 to-blue-700 rounded-2xl cursor-default ${
+        showHistory && mobileCtx?.isPortrait ? `z-20` : `z-0`
+      }`}
       style={{
         width,
         left: `${widthHelper / 2 + rightMove - width / 2}px`,
