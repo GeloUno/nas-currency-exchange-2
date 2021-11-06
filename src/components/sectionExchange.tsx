@@ -42,10 +42,15 @@ function SectionExchange() {
   if (isLoading) {
     return (
       <div
-        className="flex absolute top-60 -left-32  w-screen  justify-center"
+        className="flex absolute top-60 -left-32  w-screen  justify-center "
         style={{ height: '503px' }}
       >
-        <FadeLoader color={`#1C5CC5`} height={25} margin={20} />
+        <div
+          className="flex h-full justify-center items-center bg-gray-100 rounded-2xl"
+          style={{ width }}
+        >
+          <FadeLoader color={`#1C5CC5`} height={25} margin={20} />
+        </div>
       </div>
     );
   }

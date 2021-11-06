@@ -11,11 +11,6 @@ function BodyExchange({ width }: IBodyExchange) {
       style={{ width: width }}
     >
       <div className="flex flex-col w-full mt-14">
-        <div className="flex w-full h-20 justify-center items-center">
-          <h3 className="text-blue-500 text-3xl font-sans font-semibold ">
-            Konwerter walut
-          </h3>
-        </div>
         <FormExchange />
       </div>
     </div>
