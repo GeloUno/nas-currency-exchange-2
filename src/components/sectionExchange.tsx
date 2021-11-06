@@ -10,6 +10,7 @@ import { currencyCodeCountryObjectToArray } from '../controllers/CurrencyCodeCou
 import FadeLoader from 'react-spinners/FadeLoader';
 import ErrorContext from '../store/errorContext';
 import CurrencyContext from '../store/currencyContext';
+import FormExchange from './formExchange';
 
 function SectionExchange() {
   const currencyCtx = useContext(CurrencyContext);
@@ -64,8 +65,12 @@ function SectionExchange() {
       className="flex absolute top-60 -left-32  w-screen  justify-center"
       style={{ height: '503px' }}
     >
-      <HistoryExchange width={width} />
-      <BodyExchange width={width} />
+      <BodyExchange width={width}>
+        <HistoryExchange width={width} />
+      </BodyExchange>
+      <BodyExchange width={width} absolute>
+        <FormExchange />
+      </BodyExchange>
     </div>
   );
 }

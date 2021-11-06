@@ -2,16 +2,21 @@ import FormExchange from './formExchange';
 
 interface IBodyExchange {
   width: number;
+  children: React.ReactNode;
+  absolute?: boolean;
 }
 
-function BodyExchange({ width }: IBodyExchange) {
+function BodyExchange({ width, children, absolute }: IBodyExchange) {
   return (
     <div
-      className="absolute bg-white h-full text-black rounded-2xl w-full"
+      className={`${
+        absolute ? `absolute` : ``
+      } bg-white h-full text-black rounded-2xl w-full`}
       style={{ width: width }}
     >
-      <div className="flex flex-col w-full mt-14">
-        <FormExchange />
+      <div className="flex flex-col w-full">
+        {/* <FormExchange /> */}
+        {children}
       </div>
     </div>
   );

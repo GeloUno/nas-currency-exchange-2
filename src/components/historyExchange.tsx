@@ -1,8 +1,6 @@
 import { useWindowWidth } from '@react-hook/window-size';
 import { IoCloseSharp } from 'react-icons/io5';
 import { useEffect, useState, useContext } from 'react';
-import { IExchangeLocalStorage } from '../models/IExchangeLocalStorage';
-import { getExchangeFromLocalStorage } from '../controllers/getExchangeFromLocalSrorage';
 import HistoryExchangeList from './historyExchangeList';
 import NoHistoryExchange from './noHistoryExchange';
 import CleaningHistoryExchange from './cleaningHistoryExchange';
@@ -55,7 +53,7 @@ function HistoryExchange({ width }: IHistoryExchangeProps) {
       </div>
       <div className="flex flex-col h-5/6 w-4/6  justify-start self-center mr-12">
         <div className="flex flex-col h-5/6 w-full ">
-          <div className="flex justify-between w-full text-xs border-b-2 border-white py-4 font-medium">
+          <div className="flex justify-between w-full text-xs border-b-2 border-white py-4 font-medium text-white">
             <p>Data</p> <p>Przed konwersją</p> <p>Po konwersji</p>
           </div>
           {historyCtx?.historyExchange &&

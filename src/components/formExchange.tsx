@@ -57,12 +57,11 @@ function FormExchange() {
     setError,
     clearErrors,
     control,
-    watch,
     formState,
   } = useForm<IFormExchange>();
 
   const { errors, isDirty } = formState;
-  const { dirtyFields } = useFormState<IFormExchange>({ control });
+  // const { dirtyFields } = useFormState<IFormExchange>({ control });
 
   const onSubmitHandler: SubmitHandler<IFormExchange> = (data) => {
     if (data.valueFrom === '' && data.valueTo === '') {
@@ -108,6 +107,11 @@ function FormExchange() {
 
   return (
     <div className="flex flex-col w-full">
+      <div className="flex w-full justify-center items-center pt-12 pb-10 ">
+        <h3 className="text-blue-500 text-3xl font-sans font-semibold ">
+          Konwerter walut
+        </h3>
+      </div>
       <form
         onSubmit={handleSubmit(onSubmitHandler)}
         className="flex flex-col w-full justify-center items-center"
