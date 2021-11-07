@@ -63,7 +63,10 @@ function FormExchange() {
       return;
     }
 
-    if (isNaN(+data.valueFrom) || data.valueFrom === '0') {
+    if (
+      isNaN(+data.valueFrom) ||
+      (data.valueFrom !== '' && +data.valueFrom === 0)
+    ) {
       setError('valueFrom', { message: 'Nieprawidłowa wartość' });
       return;
     } else {
@@ -81,7 +84,7 @@ function FormExchange() {
       }
     }
 
-    if (isNaN(+data.valueTo) || data.valueTo === '0') {
+    if (isNaN(+data.valueTo) || (data.valueTo !== '' && +data.valueTo === 0)) {
       setError('valueTo', { message: 'Nieprawidłowa wartość' });
       return;
     } else {
