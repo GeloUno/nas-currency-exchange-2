@@ -4,10 +4,10 @@ import { useContext, useMemo, useState } from 'react';
 import { ICurrenciesCode } from '../models/currencyCode';
 import { useQuery } from 'react-query';
 import { getCurrencyExchange } from '../controllers/getCurrencyEchange';
-import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { IFormExchange } from '../models/IFormExchange';
 import { addExchangeToLocalStorage } from '../controllers/addExchangeToLocalSrorage';
-import { DevTool } from '@hookform/devtools';
+// import { DevTool } from '@hookform/devtools';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import ErrorContext from '../store/errorContext';
 import HistoryExchangeContext from '../store/historyContext';
@@ -26,7 +26,7 @@ function FormExchange() {
 
   const [exchangeValue, setExchangeValue] = useState<number | null>(null);
 
-  const { data, isError, isLoading, refetch } = useQuery(
+  const { data, isError, isLoading } = useQuery(
     [
       'getCurrencyExchange',
       currencyCtx?.currencyFrom.id,
@@ -50,15 +50,8 @@ function FormExchange() {
     }
   }, [data]);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    setError,
-    clearErrors,
-    control,
-    formState,
-  } = useForm<IFormExchange>();
+  const { register, handleSubmit, setValue, setError, clearErrors, formState } =
+    useForm<IFormExchange>();
 
   const { errors, isDirty } = formState;
   // const { dirtyFields } = useFormState<IFormExchange>({ control });
@@ -70,8 +63,9 @@ function FormExchange() {
       return;
     }
 
-    if (data.valueFrom === '0' || isNaN(+data.valueFrom)) {
+    if (isNaN(+data.valueFrom) || data.valueFrom === '0') {
       setError('valueFrom', { message: 'Nieprawidłowa wartość' });
+      return;
     } else {
       if (exchangeValue && +data.valueFrom !== 0) {
         const calc = (+data.valueFrom * +exchangeValue).toFixed(2);
@@ -87,8 +81,9 @@ function FormExchange() {
       }
     }
 
-    if (data.valueTo === '0' || isNaN(+data.valueTo)) {
+    if (isNaN(+data.valueTo) || data.valueTo === '0') {
       setError('valueTo', { message: 'Nieprawidłowa wartość' });
+      return;
     } else {
       if (exchangeValue && +data.valueTo !== 0) {
         const calc = (+data.valueTo / +exchangeValue).toFixed(2);

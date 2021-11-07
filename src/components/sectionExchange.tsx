@@ -12,13 +12,10 @@ import ErrorContext from '../store/errorContext';
 import CurrencyContext from '../store/currencyContext';
 import FormExchange from './formExchange';
 import SectionWrapperExchange from './sectionWrapperExchange';
-import MobileContext from '../store/mobileContext';
 
 function SectionExchange() {
   const currencyCtx = useContext(CurrencyContext);
   const errorCtx = useContext(ErrorContext);
-  const mobileCtx = useContext(MobileContext);
-  // const width = mobileCtx?.isMobile ? mobileCtx.widthWindow * 0.8 : 462;
   const width = 462;
 
   const {

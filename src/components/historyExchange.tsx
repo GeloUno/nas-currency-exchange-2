@@ -36,22 +36,21 @@ function HistoryExchange({ width }: IHistoryExchangeProps) {
       }}
     >
       <div
-        className={`p-2 flex flex-row justify-center font-medium ${
+        className={`p-2 flex flex-row justify-center align-middle font-medium ${
           showHistory ? `text-white` : `text-blue-200`
         } m-2 text-center`}
         style={{
-          transform: 'translate(160px,-165px) rotate(90deg)',
+          transform: 'translate(158px,-165px) rotate(90deg)',
           transition: '1s ease-in-out',
         }}
       >
         {showHistory && (
-          <IoCloseSharp
-            className=" font-bold cursor-pointer w-6 h-6 mt-0 mr-1 "
-            onClick={() => setShowHistory((prev) => !prev)}
-          />
+          <p className="cursor-pointer w-10 h-10 justify-center p-1">
+            <IoCloseSharp onClick={() => setShowHistory((prev) => !prev)} />
+          </p>
         )}
         <p
-          className="cursor-pointer h-8 "
+          className="cursor-pointer w-8 h-8"
           onClick={() => setShowHistory((prev) => !prev)}
         >
           Historia

@@ -1,5 +1,3 @@
-import FormExchange from './formExchange';
-
 interface IBodyExchange {
   width: number;
   children: React.ReactNode;
@@ -14,10 +12,7 @@ function BodyExchange({ width, children, absolute }: IBodyExchange) {
       } bg-white h-full text-black rounded-2xl w-full`}
       style={{ width: width }}
     >
-      <div className="flex flex-col w-full">
-        {/* <FormExchange /> */}
-        {children}
-      </div>
+      <div className="flex flex-col w-full">{children}</div>
     </div>
   );
 }
