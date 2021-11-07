@@ -6,6 +6,7 @@ interface IMobileContext {
   isPortrait: boolean;
   widthWindow: number;
   heightWindow: number;
+  scale: number | null;
 }
 
 interface IMobileContextProviderProps {
@@ -19,26 +20,41 @@ export function MobileContextProvider({
 }: IMobileContextProviderProps) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isPortrait, setIsPortrait] = useState(false);
-
+  const [scale, setScale] = useState<number | null>(null);
   const widthWindow = useWindowWidth();
   const heightWindow = useWindowHeight();
 
   useMemo(() => {
-    if (heightWindow > widthWindow && widthWindow < 450) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
     if (heightWindow > widthWindow) {
       setIsPortrait(true);
     } else {
       setIsPortrait(false);
+    }
+
+    if (heightWindow > widthWindow && widthWindow < 450) {
+      const scale = ((widthWindow / 503) * 0.8).toFixed(2);
+      setScale(+scale);
+      setIsMobile(true);
+      return;
+    } else {
+      setScale(null);
+      setIsMobile(false);
+    }
+    if (heightWindow < widthWindow && heightWindow < 550) {
+      const scale = ((heightWindow / 503) * 0.8).toFixed(2);
+      setScale(+scale);
+      setIsMobile(true);
+      return;
+    } else {
+      setScale(null);
+      setIsMobile(false);
     }
   }, [widthWindow, heightWindow]);
 
   const context: IMobileContext = {
     isMobile: isMobile,
     isPortrait: isPortrait,
+    scale: scale,
     heightWindow,
     widthWindow,
   };

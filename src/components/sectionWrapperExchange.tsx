@@ -9,13 +9,10 @@ interface ISectionWrapperExchangeProps {
 function SectionWrapperExchange({ children }: ISectionWrapperExchangeProps) {
   const mobileCtx = useContext(MobileContext);
 
-  const scale = ((mobileCtx!.widthWindow / 503) * 0.8).toFixed(2);
-  const useScaleCSS: React.CSSProperties = {
-    transform: `scale(${scale})`,
-  };
-
   const isMobielUseScaleInCss: React.CSSProperties = mobileCtx?.isMobile
-    ? useScaleCSS
+    ? {
+        transform: `scale(${mobileCtx!.scale})`,
+      }
     : { fontSize: '1rem' };
 
   return (
@@ -23,7 +20,9 @@ function SectionWrapperExchange({ children }: ISectionWrapperExchangeProps) {
       //   className="absolute -top-10 -left-5 sm:top-25 sm:left-20 md:top-60 md:-left-32  flex w-screen justify-center"
       className={`absolute ${
         mobileCtx?.isMobile ? `-top-10` : `top-5`
-      } -left-5 sm:top-60 sm:-left-1/4 md:top-5 xl:top-20 flex w-screen justify-center`}
+      } -left-5 ${
+        mobileCtx?.isMobile ? `sm:-top-20` : `sm:top-60`
+      } sm:-left-1/4 md:top-5 xl:top-20 flex w-screen justify-center`}
       style={{ height: `503px`, ...isMobielUseScaleInCss }}
     >
       {children}
