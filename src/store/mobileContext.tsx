@@ -32,7 +32,8 @@ export function MobileContextProvider({
     }
 
     if (heightWindow > widthWindow && widthWindow < 450) {
-      const scale = ((widthWindow / 503) * 0.8).toFixed(2);
+      let scale = ((widthWindow / 503) * 0.8).toFixed(2);
+      scale = +scale < 0.45 ? '0.45' : scale;
       setScale(+scale);
       setIsMobile(true);
       return;
@@ -41,7 +42,8 @@ export function MobileContextProvider({
       setIsMobile(false);
     }
     if (heightWindow < widthWindow && heightWindow < 550) {
-      const scale = ((heightWindow / 503) * 0.8).toFixed(2);
+      let scale = ((heightWindow / 503) * 0.8).toFixed(2);
+      scale = +scale < 0.45 ? '0.45' : scale;
       setScale(+scale);
       setIsMobile(true);
       return;
