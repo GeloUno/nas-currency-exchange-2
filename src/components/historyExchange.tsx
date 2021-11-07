@@ -45,16 +45,16 @@ function HistoryExchange({ width }: IHistoryExchangeProps) {
         }}
       >
         {showHistory && (
-          <p className="cursor-pointer w-10 h-10 justify-center p-1">
+          <div className="cursor-pointer w-8 h-8 justify-center p-1">
             <IoCloseSharp onClick={() => setShowHistory((prev) => !prev)} />
-          </p>
+          </div>
         )}
-        <p
+        <div
           className="cursor-pointer w-8 h-8"
           onClick={() => setShowHistory((prev) => !prev)}
         >
-          Historia
-        </p>
+          <p>Historia</p>
+        </div>
       </div>
       <div className="flex flex-col h-5/6 w-4/6  justify-start self-center mr-12">
         <div className="flex flex-col h-5/6 w-full ">

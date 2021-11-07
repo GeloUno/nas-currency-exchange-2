@@ -21,7 +21,7 @@ function SectionWrapperExchange({ children }: ISectionWrapperExchangeProps) {
       className={`absolute ${
         mobileCtx?.isMobile ? `-top-10` : `top-5`
       } -left-5 ${
-        mobileCtx?.isMobile ? `sm:-top-20` : `sm:top-60`
+        mobileCtx?.isMobile ? `sm:-top-24` : `sm:top-60`
       } sm:-left-1/4 md:top-5 xl:top-20 flex w-screen justify-center`}
       style={{ height: `503px`, ...isMobielUseScaleInCss }}
     >
