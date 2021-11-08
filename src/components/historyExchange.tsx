@@ -26,6 +26,7 @@ function HistoryExchange({ width }: IHistoryExchangeProps) {
 
   return (
     <div
+      data-testid="bodyHistoryExchange"
       className={`absolute flex  h-full w-full justify-center self-start  bg-gradient-to-b from-blue-500 to-blue-700 rounded-2xl cursor-default ${
         showHistory && mobileCtx?.isPortrait ? `z-20` : `z-0`
       }`}
@@ -36,6 +37,7 @@ function HistoryExchange({ width }: IHistoryExchangeProps) {
       }}
     >
       <div
+        data-testid="historyButtonBody"
         className={`p-2 flex flex-row justify-center align-middle font-medium ${
           showHistory ? `text-white` : `text-blue-200`
         } m-2 text-center`}
@@ -45,18 +47,25 @@ function HistoryExchange({ width }: IHistoryExchangeProps) {
         }}
       >
         {showHistory && (
-          <div className="cursor-pointer w-8 h-8 justify-center p-1">
+          <div
+            data-testid="historyButtonIcon"
+            className="cursor-pointer w-8 h-8 justify-center p-1"
+          >
             <IoCloseSharp onClick={() => setShowHistory((prev) => !prev)} />
           </div>
         )}
         <div
+          data-testid="historyButtonDescription"
           className="cursor-pointer w-8 h-8"
           onClick={() => setShowHistory((prev) => !prev)}
         >
           <p>Historia</p>
         </div>
       </div>
-      <div className="flex flex-col h-5/6 w-4/6  justify-start self-center mr-12">
+      <div
+        data-testid="historyTabeleTitle"
+        className="flex flex-col h-5/6 w-4/6  justify-start self-center mr-12"
+      >
         <div className="flex flex-col h-5/6 w-full ">
           <div className="flex justify-between w-full text-xs border-b-2 border-white py-4 font-medium text-white">
             <p>Data</p> <p>Przed konwersją</p> <p>Po konwersji</p>
