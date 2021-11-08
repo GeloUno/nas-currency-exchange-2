@@ -10,7 +10,7 @@ import { currencyCodeCountryObjectToArray } from '../controllers/CurrencyCodeCou
 import FadeLoader from 'react-spinners/FadeLoader';
 import ErrorContext from '../store/errorContext';
 import CurrencyContext from '../store/currencyContext';
-import FormExchange from './formExchange';
+import FormExchange from './formExchangeData';
 import SectionWrapperExchange from './sectionWrapperExchange';
 
 function SectionExchange() {

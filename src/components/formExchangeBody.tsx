@@ -1,55 +1,40 @@
 import { RiArrowLeftRightFill } from 'react-icons/ri';
 import SelectExchange from './selectExchange';
-import { useContext, useMemo, useState } from 'react';
 import { ICurrenciesCode } from '../models/currencyCode';
-import { useQuery } from 'react-query';
-import { getCurrencyExchange } from '../controllers/getCurrencyEchange';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IFormExchange } from '../models/IFormExchange';
 import { addExchangeToLocalStorage } from '../controllers/addExchangeToLocalSrorage';
 // import { DevTool } from '@hookform/devtools';
 import ScaleLoader from 'react-spinners/ScaleLoader';
-import ErrorContext from '../store/errorContext';
-import HistoryExchangeContext from '../store/historyContext';
-import CurrencyContext from '../store/currencyContext';
+import {
+  divideExchange,
+  multiplyExchange,
+  isNotEmptyStringAndValueIsZero,
+  isBothInputsHaveEmptyString,
+  isValueExchangeAndDataInputIsNumberOtherThanZero,
+} from '../controllers/form/input';
 
-function FormExchange() {
-  const currencyCtx = useContext(CurrencyContext);
-  const errorCtx = useContext(ErrorContext);
-  const historyCtx = useContext(HistoryExchangeContext);
+interface IFormExchangeBodyProps {
+  exchangeValue: number | null;
+  currencyFrom: ICurrenciesCode;
+  currencyTo: ICurrenciesCode;
+  refreshHistoryFromLocalStorage(): void;
+  setCurrencyFrom(code: ICurrenciesCode): void;
+  setCurrencyTo(code: ICurrenciesCode): void;
+  toggleCurrencyHandler(): void;
+  isLoading: boolean;
+}
 
-  function toggleCurrencyHandler() {
-    const currencyHelper: ICurrenciesCode = currencyCtx!.currencyFrom;
-    currencyCtx?.setCurrencyFrom(currencyCtx.currencyTo);
-    currencyCtx?.setCurrencyTo(currencyHelper);
-  }
-
-  const [exchangeValue, setExchangeValue] = useState<number | null>(null);
-
-  const { data, isError, isLoading } = useQuery(
-    [
-      'getCurrencyExchange',
-      currencyCtx?.currencyFrom.id,
-      currencyCtx?.currencyTo.id,
-    ],
-    () =>
-      getCurrencyExchange(currencyCtx!.currencyFrom, currencyCtx!.currencyTo),
-    {
-      staleTime: 1 * 60 * 60 * 1000,
-    }
-  );
-
-  if (isError) {
-    errorCtx?.showErrorExchangeMessage();
-  }
-
-  useMemo(() => {
-    if (data?.data) {
-      const key = Object.keys(data?.data);
-      setExchangeValue(() => data?.data[key[0]].val);
-    }
-  }, [data]);
-
+function FormExchangeBody({
+  exchangeValue,
+  currencyFrom,
+  currencyTo,
+  refreshHistoryFromLocalStorage,
+  setCurrencyFrom,
+  setCurrencyTo,
+  toggleCurrencyHandler,
+  isLoading,
+}: IFormExchangeBodyProps) {
   const { register, handleSubmit, setValue, setError, clearErrors, formState } =
     useForm<IFormExchange>();
 
@@ -57,7 +42,7 @@ function FormExchange() {
   // const { dirtyFields } = useFormState<IFormExchange>({ control });
 
   const onSubmitHandler: SubmitHandler<IFormExchange> = (data) => {
-    if (data.valueFrom === '' && data.valueTo === '') {
+    if (isBothInputsHaveEmptyString(data.valueFrom, data.valueTo)) {
       setError('valueFrom', { message: 'Nieprawidłowa wartość' });
       setError('valueTo', { message: 'Nieprawidłowa wartość' });
       return;
@@ -65,60 +50,77 @@ function FormExchange() {
 
     if (
       isNaN(+data.valueFrom) ||
-      (data.valueFrom !== '' && +data.valueFrom === 0)
+      isNotEmptyStringAndValueIsZero(data.valueFrom)
     ) {
       setError('valueFrom', { message: 'Nieprawidłowa wartość' });
       return;
     } else {
-      if (exchangeValue && +data.valueFrom !== 0) {
-        const calc = (+data.valueFrom * +exchangeValue).toFixed(2);
+      if (
+        isValueExchangeAndDataInputIsNumberOtherThanZero(
+          exchangeValue,
+          data.valueFrom
+        )
+      ) {
+        const calc = multiplyExchange(data.valueFrom, exchangeValue);
         setValue('valueTo', calc);
         addExchangeToLocalStorage(
           data.valueFrom.toString(),
-          currencyCtx!.currencyFrom.id,
+          currencyFrom.id,
           calc,
-          currencyCtx!.currencyTo.id
+          currencyTo.id
         );
-        historyCtx?.refreshHistoryFromLocalStorage();
+        refreshHistoryFromLocalStorage();
         return;
       }
     }
 
-    if (isNaN(+data.valueTo) || (data.valueTo !== '' && +data.valueTo === 0)) {
+    if (isNaN(+data.valueTo) || isNotEmptyStringAndValueIsZero(data.valueTo)) {
       setError('valueTo', { message: 'Nieprawidłowa wartość' });
       return;
     } else {
       if (exchangeValue && +data.valueTo !== 0) {
-        const calc = (+data.valueTo / +exchangeValue).toFixed(2);
+        const calc = divideExchange(data.valueTo, exchangeValue);
         setValue('valueFrom', calc);
         addExchangeToLocalStorage(
           calc,
-          currencyCtx!.currencyFrom.id,
+          currencyFrom.id,
           data.valueTo.toString(),
-          currencyCtx!.currencyTo.id
+          currencyTo.id
         );
-        historyCtx?.refreshHistoryFromLocalStorage();
+        refreshHistoryFromLocalStorage();
         return;
       }
     }
   };
 
   return (
-    <div className="flex flex-col w-full">
-      <div className="flex w-full justify-center items-center pt-12 pb-10 ">
-        <h3 className="text-blue-500 text-3xl font-sans font-semibold ">
+    <>
+      <div
+        data-testid="formExchangeBody"
+        className="flex w-full justify-center items-center pt-12 pb-10 "
+      >
+        <h3
+          data-testid="formExchangeTitle"
+          className="text-blue-500 text-3xl font-sans font-semibold "
+        >
           Konwerter walut
         </h3>
       </div>
       <form
+        data-testid="formExchangeForm"
         onSubmit={handleSubmit(onSubmitHandler)}
         className="flex flex-col w-full justify-center items-center"
       >
-        <div className="relative w-4/6 my-3">
-          <label htmlFor="" className="absolute top-2 right-2 text-gray-300">
-            {currencyCtx?.currencyFrom && currencyCtx.currencyFrom.id}
+        <div data-testid="firstInputFormBody" className="relative w-4/6 my-3">
+          <label
+            data-testid="firstLabelForm"
+            htmlFor=""
+            className="absolute top-2 right-2 text-gray-300"
+          >
+            {currencyFrom && currencyFrom.id}
           </label>
           <input
+            data-testid="firstInputForm"
             type="text"
             className={`w-full border-b-2 p-1 pt-2 pb-2 ${
               errors.valueFrom
@@ -134,14 +136,22 @@ function FormExchange() {
             }}
           />
           {errors.valueFrom && (
-            <p className="text-red-500 text-xs">{`${errors.valueFrom.message}`}</p>
+            <p
+              data-testid="firstInputError"
+              className="text-red-500 text-xs"
+            >{`${errors.valueFrom.message}`}</p>
           )}
         </div>
-        <div className="relative w-4/6 my-3 ">
-          <label htmlFor="" className="absolute top-0 right-2 text-gray-300">
-            {currencyCtx?.currencyTo && currencyCtx.currencyTo.id}
+        <div data-testid="secondInputFormBody" className="relative w-4/6 my-3 ">
+          <label
+            data-testid="secondLabelForm"
+            htmlFor=""
+            className="absolute top-0 right-2 text-gray-300"
+          >
+            {currencyTo && currencyTo.id}
           </label>
           <input
+            data-testid="secondInputForm"
             type="text"
             className={`w-full border-b-2 p-1 pt-0 pb-2  ${
               errors.valueTo
@@ -157,17 +167,21 @@ function FormExchange() {
             }}
           />
           {errors.valueTo && (
-            <p className="text-red-500 text-xs">{`${errors.valueTo.message}`}</p>
+            <p
+              data-testid="secondInputError"
+              className="text-red-500 text-xs"
+            >{`${errors.valueTo.message}`}</p>
           )}
         </div>
         <div className="flex flex-row w-4/6 justify-between items-center my-5">
-          <div>
+          <div data-testid="firstSelectExchane">
             <SelectExchange
-              currency={currencyCtx!.currencyFrom}
-              setCurrency={currencyCtx!.setCurrencyFrom}
+              currency={currencyFrom}
+              setCurrency={setCurrencyFrom}
             />
           </div>
           <div
+            data-testid="toggleSelectExchane"
             className="cursor-pointer"
             onClick={() => {
               toggleCurrencyHandler();
@@ -178,17 +192,17 @@ function FormExchange() {
             {isLoading && (
               <ScaleLoader height={15} width={2} radius={1} margin={2} />
             )}
-            {!isLoading && <RiArrowLeftRightFill />}
+            {!isLoading && (
+              <RiArrowLeftRightFill data-testid="toggleCurrencyExchange" />
+            )}
           </div>
-          <div>
-            <SelectExchange
-              currency={currencyCtx!.currencyTo}
-              setCurrency={currencyCtx!.setCurrencyTo}
-            />
+          <div data-testid="secondSelectExchane">
+            <SelectExchange currency={currencyTo} setCurrency={setCurrencyTo} />
           </div>
         </div>
         <div className="flex w-4/6">
           <input
+            data-testid="buttonSubmitForm"
             type="submit"
             className={`flex w-full py-4 text-left ${
               isDirty ? `bg-blue-600` : `bg-gray-300`
@@ -200,8 +214,8 @@ function FormExchange() {
       </form>
 
       {/* <DevTool control={control} placement={'top-left'} /> */}
-    </div>
+    </>
   );
 }
 
-export default FormExchange;
+export default FormExchangeBody;
